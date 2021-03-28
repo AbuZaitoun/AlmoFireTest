@@ -19,8 +19,9 @@ class DetailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     commonInit()
-    
     listTableView.dataSource = self
+    fetchList()
+
   }
   
   private func commonInit() {
@@ -50,6 +51,7 @@ extension DetailViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath)
+    cell.textLabel?.text = listData[indexPath.row].titleLabelText
     return cell
   }
 }
@@ -89,6 +91,9 @@ extension DetailViewController {
     switch data {
     case is Film:
       fetch(data.listItems, of: Starship.self)
+    case is Starship:
+      fetch(data.listItems, of: Film.self)
+
     default:
       print("Unknown type: ", String(describing: type(of: data)))
     }
